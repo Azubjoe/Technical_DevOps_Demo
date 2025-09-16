@@ -1,0 +1,10 @@
+name: my-django-project
+
+services: 
+  app:
+    image: sunny-docker-image
+    container_name: sunny-docker-container
+    ports:
+      -  "8001:8000"
+    volumes:
+      - .:/app
