@@ -1,0 +1,8 @@
+# configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: django-config
+data:
+  DATABASE_URL: "postgresql://user:password@172.31.26.189:5432/dbname"
+  ALLOWED_HOSTS: "*"
