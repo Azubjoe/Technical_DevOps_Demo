@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: sunny-docker-container
-        image: codeimager/sunny-docker-image
+        image: codeimager/my-djangoapp-image
         ports:
         - containerPort: 8000
