@@ -1,22 +1,26 @@
-# Django Technical DevOps App
+# Project Overview
 
-This is a Django project used for demonstrating DevOps and cloud infrastructure skills. It includes both a local SQLite database for development and a PostgreSQL database (Amazon RDS) for production environments. The project is configured to automatically switch to RDS when the necessary environment variables are provided.
+This is a project to deploy Django app on Amazon EKS using Docker and Kubernetes manifests. Terraform was used to created the VPC infrastructure.
 
-## Features
+## Installation and Cofiguration Guide
 
-- Django web application.
-- Automatically switches between SQLite (development) and PostgreSQL (production) based on environment variables.
-- Production-ready configuration for integration with Amazon RDS.
+### 1. Deploy VPC Services
+Initialize and apply
+terraform init
+terraform apply
 
-## Setup and Installation
 
-### 1. Clone the Repository
+### 2. Set up Amazon EKS configuration
+Login to AWS console and create EKS services  
+
+
+### 3. Clone the Repository
 
 ```bash
 git clone https://github.com/cognetiks/Technical_DevOps_app.git
 cd Technical_DevOps_app
 ```
-### 2. Install Dependencies
+### 4. Install Dependencies
 
 Make sure you have Python 3.8+ and pip installed. Then, create a virtual environment and install the required packages:
 
@@ -26,7 +30,7 @@ source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 pip install -r requirements.txt
 ```
 
-### 3. Environment Variables
+### 5. Environment Variables
 
 For the project to work in production with an Amazon RDS instance, you need to set the following environment variables:
 
@@ -85,5 +89,25 @@ python manage.py runserver
 ### Production Deployment
 When deploying to production (e.g., on AWS or any other cloud provider), ensure the required environment variables are set. The app will automatically connect to the PostgreSQL RDS instance once the variables are correctly configured.
 
-### Contributing
-Feel free to fork the repository and submit pull requests for improvements or bug fixes.
+### 7. Create Dockerfile for the Django Application
+FROM python:3.12
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+COPY . .
+
+EXPOSE 8000
+
+CMD [ "python", "manage.py", "runserver", "0.0.0.0:8000" ]
+
+### 8. Deploy Django app on EKS cluster
+Use the created docker image in step 7 and the kubernetes manifest files to deploy Django Apllication on the EKS cluster. 
+
